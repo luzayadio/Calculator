@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,13 +12,18 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.calculator.ui.theme.CalculatorTheme
 
 class MainActivity : ComponentActivity() {
@@ -40,37 +46,47 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CalculatorApp(modifier: Modifier = Modifier) {
+    val buttonMod = Modifier.fillMaxHeight().padding(5.dp);
+    val buttonShape = RoundedCornerShape(50);
+    //val buttonBorder = BorderStroke(2.dp, Color(105, 205, 216));
+
     Column(
         modifier = modifier,
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().weight(1F),
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.Bottom,
         ) {
             Text(
                 "0",
+                fontSize = 100.sp,
             )
         }
         Row(
             modifier = Modifier.weight(1F),
         ) {
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("C")
             }
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("+/-")
             }
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("%")
             }
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("/")
             }
@@ -79,22 +95,26 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
             modifier = Modifier.weight(1F),
         ) {
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("7")
             }
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("8")
             }
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("9")
             }
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("X")
             }
@@ -103,22 +123,26 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
             modifier = Modifier.weight(1F),
         ) {
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("4")
             }
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("5")
             }
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("6")
             }
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("-")
             }
@@ -127,22 +151,26 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
             modifier = Modifier.weight(1F),
         ) {
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("1")
             }
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("2")
             }
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("3")
             }
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("+")
             }
@@ -151,17 +179,20 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
             modifier = Modifier.weight(1F),
         ) {
             Button(
-                modifier = Modifier.weight(2F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(2F),
                 onClick = {  }) {
                 Text("0")
             }
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text(",")
             }
             Button(
-                modifier = Modifier.weight(1F).fillMaxHeight(),
+                shape = buttonShape,
+                modifier = buttonMod.weight(1F),
                 onClick = {  }) {
                 Text("=")
             }
