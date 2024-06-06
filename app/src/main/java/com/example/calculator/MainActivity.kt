@@ -45,11 +45,21 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun CalculatorApp(modifier: Modifier = Modifier) {
-    val buttonMod = Modifier.fillMaxHeight().padding(5.dp);
-    val buttonShape = RoundedCornerShape(50);
-    //val buttonBorder = BorderStroke(2.dp, Color(105, 205, 216));
+fun MyButton(modifier: Modifier = Modifier, text: String) {
+    Button(
+        shape = RoundedCornerShape(50),
+        modifier = modifier.fillMaxHeight().padding(5.dp),
+        onClick = {  }
+    ) {
+        Text(
+            text,
+            fontSize = 30.sp,
+        )
+    }
+}
 
+@Composable
+fun CalculatorApp(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
     ) {
@@ -66,136 +76,99 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier.weight(1F),
         ) {
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("C")
-            }
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("+/-")
-            }
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("%")
-            }
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("/")
-            }
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "C"
+            )
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "+/-"
+            )
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "%"
+            )
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "/"
+            )
         }
         Row(
             modifier = Modifier.weight(1F),
         ) {
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("7")
-            }
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("8")
-            }
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("9")
-            }
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("X")
-            }
+
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "7"
+            )
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "8"
+            )
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "9"
+            )
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "X"
+            )
         }
         Row(
             modifier = Modifier.weight(1F),
         ) {
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("4")
-            }
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("5")
-            }
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("6")
-            }
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("-")
-            }
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "4"
+            )
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "5"
+            )
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "6"
+            )
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "-"
+            )
         }
         Row(
             modifier = Modifier.weight(1F),
         ) {
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("1")
-            }
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("2")
-            }
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("3")
-            }
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("+")
-            }
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "1"
+            )
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "2"
+            )
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "3"
+            )
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "+"
+            )
         }
         Row(
             modifier = Modifier.weight(1F),
         ) {
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(2F),
-                onClick = {  }) {
-                Text("0")
-            }
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text(",")
-            }
-            Button(
-                shape = buttonShape,
-                modifier = buttonMod.weight(1F),
-                onClick = {  }) {
-                Text("=")
-            }
+            MyButton(
+                modifier = Modifier.weight(2F),
+                text = "0"
+            )
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = ","
+            )
+            MyButton(
+                modifier = Modifier.weight(1F),
+                text = "="
+            )
         }
     }
 }
