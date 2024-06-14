@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,20 +12,26 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,16 +56,68 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyButton(
+fun TopButton(
     modifier: Modifier = Modifier,
     text: String,
-    bg: Color = Color.Black,
+    bg: Color = Color(4288980132),
     onClick: () -> Unit,
 ) {
 
     Button(
         colors = ButtonDefaults.buttonColors(containerColor = bg),
-        shape = RoundedCornerShape(50),
+        //shape = RoundedCornerShape(60),
+        shape = CircleShape,
+        modifier = modifier
+            .fillMaxHeight()
+            .padding(5.dp),
+        onClick = onClick
+    ) {
+        Text(
+            text,
+            fontSize = 30.sp,
+            color = Color.Black,
+        )
+    }
+}
+
+@Composable
+fun RightButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    bg: Color = Color(4294876685),
+    textColor: Color = Color.White,
+    onClick: () -> Unit,
+) {
+
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = bg),
+        //shape = RoundedCornerShape(60),
+        shape = CircleShape,
+        modifier = modifier
+            .fillMaxHeight()
+            .padding(5.dp),
+        onClick = onClick
+    ) {
+        Text(
+            text,
+            fontSize = 30.sp,
+            color = textColor
+        )
+    }
+}
+
+@Composable
+fun CenterButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    bg: Color = Color(4281479730),
+    onClick: () -> Unit,
+) {
+
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = bg),
+        //shape = RoundedCornerShape(60),
+        shape = CircleShape,
         modifier = modifier
             .fillMaxHeight()
             .padding(5.dp),
@@ -73,16 +132,14 @@ fun MyButton(
 
 @Composable
 fun CalculatorApp(modifier: Modifier = Modifier) {
-    var oldNum by remember { mutableStateOf(0) }
-    val num2 by remember { mutableStateOf(0) }
+    var oldNum by remember { mutableDoubleStateOf(0.0) }
     var operator by remember { mutableStateOf("") }
-    val hasResult by remember { mutableStateOf(false) }
     var numberText by remember { mutableStateOf("0") }
     var reset by remember { mutableStateOf(true) }
 
     fun numberClicked(value: String) {
-        val intNumber = numberText.toInt()
-        if(intNumber == 0 || reset) {
+        val intNumber = numberText.toDouble()
+        if(intNumber == 0.0 || reset) {
             oldNum = intNumber
             numberText = value
             reset = false
@@ -92,78 +149,93 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
     }
 
     fun calculate() {
-        when(operator) {
-            "+" -> {
-                numberText = (oldNum + numberText.toInt()).toString()
-                reset = true
-            }
-            "-" -> {
-                numberText = (oldNum - numberText.toInt()).toString()
-                reset = true
+        try {
+            when(operator) {
+                "+" -> {
+                    numberText = (oldNum + numberText.toDouble()).toString()
+                    reset = true
+                }
+                "-" -> {
+                    numberText = (oldNum - numberText.toDouble()).toString()
+                    reset = true
 
+                }
+                "*" -> {
+                    numberText = (oldNum * numberText.toDouble()).toString()
+                    reset = true
+                }
+                "/" -> {
+                    numberText = (oldNum / numberText.toDouble()).toString()
+                    reset = true
+                }
+                "%" -> {
+                    numberText = (numberText.toDouble() / 100).toString()
+                    reset = true
+                }
             }
-            "*" -> {
-                numberText = (oldNum * numberText.toInt()).toString()
-                reset = true
-            }
-            "/" -> {
-                numberText = (oldNum / numberText.toInt()).toString()
-                reset = true
-            }
+            operator = ""
+        } catch (e: ArithmeticException)  {
+            println(e)
         }
-        operator = ""
     }
 
     fun operatorClicked(op: String) {
-        if(oldNum != 0) {
+        /*if(oldNum != 0) {
             calculate()
-        }
+        }*/
         operator = op
         reset = true
     }
 
     Column(
-        modifier = modifier,
+        modifier = modifier.background(Color.Black),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1F),
+                .weight(3F),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.Bottom,
         ) {
             Text(
-                numberText.toString(),
-                fontSize = 100.sp,
+                numberText,
+                color = Color.White,
+                fontWeight = FontWeight.ExtraLight,
+                softWrap = false,
+                //fontSize = if(numberText.length > 6) (100 - (numberText.length * 4)).sp else 100.sp
+                fontSize = 100.sp
             )
         }
         Row(
             modifier = Modifier.weight(1F),
         ) {
-            MyButton(
+            TopButton(
                 modifier = Modifier.weight(1F),
-                text = "C",
+                text = if(oldNum == 0.0 && numberText.toDouble() == 0.0) "AC" else "C",
                 onClick = {
                     operator = ""
                     reset = true
-                    oldNum = 0
+                    oldNum = 0.0
                     numberText = "0"
                 },
             )
-            MyButton(
+            TopButton(
                 modifier = Modifier.weight(1F),
                 text = "+/-",
-                onClick = { operator = "+/-" },
+                onClick = {
+                    numberText = (numberText.toDouble() * -1).toString()
+                },
             )
-            MyButton(
+            TopButton(
                 modifier = Modifier.weight(1F),
                 text = "%",
-                onClick = { operator = "%" },
+                onClick = { operator = "%"; calculate() },
             )
-            MyButton(
+            RightButton(
                 modifier = Modifier.weight(1F),
-                text = "/",
-                bg = if(operator == "/") Color.DarkGray else Color.Black,
+                text = "÷",
+                bg = if(operator == "/") Color.White else Color(4294876685),
+                textColor = if(operator == "/") Color(4294876685) else Color.White,
                 onClick = { operatorClicked("/") },
             )
         }
@@ -171,93 +243,96 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
             modifier = Modifier.weight(1F),
         ) {
 
-            MyButton(
+            CenterButton(
                 modifier = Modifier.weight(1F),
                 text = "7",
                 onClick = { numberClicked("7") },
 
             )
-            MyButton(
+            CenterButton(
                 modifier = Modifier.weight(1F),
                 text = "8",
                 onClick = { numberClicked("8") },
             )
-            MyButton(
+            CenterButton(
                 modifier = Modifier.weight(1F),
                 text = "9",
                 onClick = { numberClicked("9") },
             )
-            MyButton(
+            RightButton(
                 modifier = Modifier.weight(1F),
-                text = "X",
-                bg = if(operator == "*") Color.DarkGray else Color.Black,
+                text = "×",
+                bg = if(operator == "*") Color.White else Color(4294876685),
+                textColor = if(operator == "*") Color(4294876685) else Color.White,
                 onClick = { operatorClicked("*") },
             )
         }
         Row(
             modifier = Modifier.weight(1F),
         ) {
-            MyButton(
+            CenterButton(
                 modifier = Modifier.weight(1F),
                 text = "4",
                 onClick = { numberClicked("4") },
             )
-            MyButton(
+            CenterButton(
                 modifier = Modifier.weight(1F),
                 text = "5",
                 onClick = { numberClicked("5") },
             )
-            MyButton(
+            CenterButton(
                 modifier = Modifier.weight(1F),
                 text = "6",
                 onClick = { numberClicked("6") },
             )
-            MyButton(
+            RightButton(
                 modifier = Modifier.weight(1F),
                 text = "-",
-                bg = if(operator == "-") Color.DarkGray else Color.Black,
+                bg = if(operator == "-") Color.White else Color(4294876685),
+                textColor = if(operator == "-") Color(4294876685) else Color.White,
                 onClick = { operatorClicked("-") },
             )
         }
         Row(
             modifier = Modifier.weight(1F),
         ) {
-            MyButton(
+            CenterButton(
                 modifier = Modifier.weight(1F),
                 text = "1",
                 onClick = { numberClicked("1") },
             )
-            MyButton(
+            CenterButton(
                 modifier = Modifier.weight(1F),
                 text = "2",
                 onClick = { numberClicked("2") },
             )
-            MyButton(
+            CenterButton(
                 modifier = Modifier.weight(1F),
                 text = "3",
                 onClick = { numberClicked("3") },
             )
-            MyButton(
+            RightButton(
                 modifier = Modifier.weight(1F),
                 text = "+",
-                bg = if(operator == "+") Color.DarkGray else Color.Black,
+                bg = if(operator == "+") Color.White else Color(4294876685),
+                textColor = if(operator == "+") Color(4294876685) else Color.White,
                 onClick = { operatorClicked("+") },
             )
         }
         Row(
             modifier = Modifier.weight(1F),
         ) {
-            MyButton(
+            CenterButton(
                 modifier = Modifier.weight(2F),
                 text = "0",
                 onClick = { numberClicked("0") },
             )
-            MyButton(
+            CenterButton(
                 modifier = Modifier.weight(1F),
                 text = ",",
-                onClick = { operator = "," },
+                onClick = { numberText += "." },
             )
-            MyButton(
+            RightButton(
                 modifier = Modifier.weight(1F),
                 text = "=",
                 onClick = { calculate() },
