@@ -12,15 +12,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
@@ -31,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -130,49 +125,46 @@ fun CenterButton(
     }
 }
 
+fun CheckDecimal(num: Double): Boolean {
+    val intpart = num.toInt()
+    val decpart = num - intpart
+    return decpart != 0.0
+}
+
 @Composable
 fun CalculatorApp(modifier: Modifier = Modifier) {
     var oldNum by remember { mutableDoubleStateOf(0.0) }
     var operator by remember { mutableStateOf("") }
     var numberText by remember { mutableStateOf("0") }
     var reset by remember { mutableStateOf(true) }
+    var hasDecimal by remember { mutableStateOf(false) }
 
     fun numberClicked(value: String) {
-        val intNumber = numberText.toDouble()
-        if(intNumber == 0.0 || reset) {
-            oldNum = intNumber
+        val doubleNumber = numberText.toDouble()
+        if((doubleNumber == 0.0 && !hasDecimal) || reset) {
+            oldNum = doubleNumber
             numberText = value
             reset = false
         }
-        else
+        else{
             numberText += value
+            hasDecimal = false
+        }
     }
 
     fun calculate() {
         try {
+            var result: Double = 0.0;
             when(operator) {
-                "+" -> {
-                    numberText = (oldNum + numberText.toDouble()).toString()
-                    reset = true
-                }
-                "-" -> {
-                    numberText = (oldNum - numberText.toDouble()).toString()
-                    reset = true
-
-                }
-                "*" -> {
-                    numberText = (oldNum * numberText.toDouble()).toString()
-                    reset = true
-                }
-                "/" -> {
-                    numberText = (oldNum / numberText.toDouble()).toString()
-                    reset = true
-                }
-                "%" -> {
-                    numberText = (numberText.toDouble() / 100).toString()
-                    reset = true
-                }
+                "+" -> result = oldNum + numberText.toDouble()
+                "-" -> result = oldNum - numberText.toDouble()
+                "*" -> result = oldNum * numberText.toDouble()
+                "/" -> result = oldNum / numberText.toDouble()
+                "%" -> result = numberText.toDouble() / 100
             }
+            val hasDec = CheckDecimal(result)
+            numberText = if(hasDec) result.toString() else result.toInt().toString()
+            reset = true
             operator = ""
         } catch (e: ArithmeticException)  {
             println(e)
@@ -202,8 +194,7 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
                 color = Color.White,
                 fontWeight = FontWeight.ExtraLight,
                 softWrap = false,
-                //fontSize = if(numberText.length > 6) (100 - (numberText.length * 4)).sp else 100.sp
-                fontSize = 100.sp
+                fontSize = if(numberText.length > 6) (100 - (numberText.length * 4)).sp else 100.sp
             )
         }
         Row(
@@ -329,8 +320,8 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
             )
             CenterButton(
                 modifier = Modifier.weight(1F),
-                text = ",",
-                onClick = { numberText += "." },
+                text = ".",
+                onClick = { numberText += "."; hasDecimal = true },
             )
             RightButton(
                 modifier = Modifier.weight(1F),
