@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -95,7 +96,7 @@ fun RightButton(
     ) {
         Text(
             text,
-            fontSize = 30.sp,
+            fontSize = 40.sp,
             color = textColor
         )
     }
@@ -138,6 +139,7 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
     var numberText by remember { mutableStateOf("0") }
     var reset by remember { mutableStateOf(true) }
     var hasDecimal by remember { mutableStateOf(false) }
+    var fSize by remember { mutableIntStateOf(100) }
 
     fun numberClicked(value: String) {
         val doubleNumber = numberText.toDouble()
@@ -149,6 +151,14 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
         else{
             numberText += value
             hasDecimal = false
+        }
+
+        fSize = when(numberText.length) {
+            in 1..5 -> 100
+            in 6..8 -> 90
+            in 9..11 -> 75
+            in 12..11 -> 75
+            else -> 40
         }
     }
 
@@ -164,7 +174,7 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
             }
             val hasDec = CheckDecimal(result)
             numberText = if(hasDec) result.toString() else result.toInt().toString()
-            reset = true
+            //reset = true
             operator = ""
         } catch (e: ArithmeticException)  {
             println(e)
@@ -194,7 +204,8 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
                 color = Color.White,
                 fontWeight = FontWeight.ExtraLight,
                 softWrap = false,
-                fontSize = if(numberText.length > 6) (100 - (numberText.length * 4)).sp else 100.sp
+                //fontSize = if(numberText.length > 6) (100 - (numberText.length * 4)).sp else 100.sp
+                fontSize = fSize.sp
             )
         }
         Row(
@@ -321,7 +332,7 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
             CenterButton(
                 modifier = Modifier.weight(1F),
                 text = ".",
-                onClick = { numberText += "."; hasDecimal = true },
+                onClick = { numberText += "."; hasDecimal = true; reset = false },
             )
             RightButton(
                 modifier = Modifier.weight(1F),
