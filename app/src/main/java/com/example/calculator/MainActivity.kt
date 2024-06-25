@@ -19,10 +19,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -65,7 +66,6 @@ fun TopButton(
 
     Button(
         colors = ButtonDefaults.buttonColors(containerColor = bg),
-        //shape = RoundedCornerShape(60),
         shape = CircleShape,
         modifier = modifier
             .fillMaxHeight()
@@ -91,7 +91,6 @@ fun RightButton(
 
     Button(
         colors = ButtonDefaults.buttonColors(containerColor = bg),
-        //shape = RoundedCornerShape(60),
         shape = CircleShape,
         modifier = modifier
             .fillMaxHeight()
@@ -116,7 +115,6 @@ fun CenterButton(
 
     Button(
         colors = ButtonDefaults.buttonColors(containerColor = bg),
-        //shape = RoundedCornerShape(60),
         shape = CircleShape,
         modifier = modifier
             .fillMaxHeight()
@@ -130,10 +128,10 @@ fun CenterButton(
     }
 }
 
-fun CheckDecimal(num: Double): Boolean {
-    val intpart = num.toInt()
-    val decpart = num - intpart
-    return decpart != 0.0
+fun checkDecimal(num: Double): Boolean {
+    val intPart = num.toInt()
+    val decPart = num - intPart
+    return decPart != 0.0
 }
 
 @Composable
@@ -167,7 +165,7 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
                 "/" -> result = oldNum / numberText.toDouble()
                 "%" -> result = numberText.toDouble() / 100
             }
-            val hasDec = CheckDecimal(result)
+            val hasDec = checkDecimal(result)
             numberText = if(hasDec) result.toString() else result.toInt().toString()
             //reset = true
             operator = ""
@@ -217,7 +215,7 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
                 text = "+/-",
                 onClick = {
                     val negative = numberText.toDouble() * -1
-                    val hasDec = CheckDecimal(negative)
+                    val hasDec = checkDecimal(negative)
                     numberText = if(hasDec) negative.toString() else negative.toInt().toString()
                 },
             )
@@ -327,7 +325,7 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
                 text = ".",
                 onClick = {
                     if(!hasDecimal) {
-                        val hasDec = CheckDecimal(numberText.toDouble())
+                        val hasDec = checkDecimal(numberText.toDouble())
                         if (!hasDec) {
                             numberText += "."
                             hasDecimal = true
