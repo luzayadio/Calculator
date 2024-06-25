@@ -196,8 +196,7 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
                 color = Color.White,
                 fontWeight = FontWeight.ExtraLight,
                 softWrap = false,
-                //fontSize = if(numberText.length > 6) (100 - (numberText.length * 4)).sp else 100.sp
-                fontSize = 100.sp,
+                fontSize = if(numberText.length > 6) (100 - (numberText.length * 3.5)).sp else 100.sp
             )
         }
         Row(
@@ -326,7 +325,16 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
             CenterButton(
                 modifier = Modifier.weight(1F),
                 text = ".",
-                onClick = { numberText += "."; hasDecimal = true; reset = false },
+                onClick = {
+                    if(!hasDecimal) {
+                        val hasDec = CheckDecimal(numberText.toDouble())
+                        if (!hasDec) {
+                            numberText += "."
+                            hasDecimal = true
+                            reset = false
+                        }
+                    }
+              },
             )
             RightButton(
                 modifier = Modifier.weight(1F),
