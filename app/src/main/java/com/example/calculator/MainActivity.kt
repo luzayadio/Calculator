@@ -1,5 +1,7 @@
 package com.example.calculator
 
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,8 +36,10 @@ import androidx.compose.ui.unit.sp
 import com.example.calculator.ui.theme.CalculatorTheme
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
         enableEdgeToEdge()
         setContent {
             CalculatorTheme {
@@ -139,7 +143,6 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
     var numberText by remember { mutableStateOf("0") }
     var reset by remember { mutableStateOf(true) }
     var hasDecimal by remember { mutableStateOf(false) }
-    var fSize by remember { mutableIntStateOf(100) }
 
     fun numberClicked(value: String) {
         val doubleNumber = numberText.toDouble()
@@ -151,14 +154,6 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
         else{
             numberText += value
             hasDecimal = false
-        }
-
-        fSize = when(numberText.length) {
-            in 1..5 -> 100
-            in 6..8 -> 90
-            in 9..11 -> 75
-            in 12..11 -> 75
-            else -> 40
         }
     }
 
@@ -182,9 +177,6 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
     }
 
     fun operatorClicked(op: String) {
-        /*if(oldNum != 0) {
-            calculate()
-        }*/
         operator = op
         reset = true
     }
@@ -205,7 +197,7 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.ExtraLight,
                 softWrap = false,
                 //fontSize = if(numberText.length > 6) (100 - (numberText.length * 4)).sp else 100.sp
-                fontSize = fSize.sp
+                fontSize = 100.sp,
             )
         }
         Row(
@@ -225,7 +217,9 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
                 modifier = Modifier.weight(1F),
                 text = "+/-",
                 onClick = {
-                    numberText = (numberText.toDouble() * -1).toString()
+                    val negative = numberText.toDouble() * -1
+                    val hasDec = CheckDecimal(negative)
+                    numberText = if(hasDec) negative.toString() else negative.toInt().toString()
                 },
             )
             TopButton(
