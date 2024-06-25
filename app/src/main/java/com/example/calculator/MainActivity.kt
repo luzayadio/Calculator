@@ -157,13 +157,13 @@ fun CalculatorApp(modifier: Modifier = Modifier) {
 
     fun calculate() {
         try {
-            var result: Double = 0.0;
-            when(operator) {
-                "+" -> result = oldNum + numberText.toDouble()
-                "-" -> result = oldNum - numberText.toDouble()
-                "*" -> result = oldNum * numberText.toDouble()
-                "/" -> result = oldNum / numberText.toDouble()
-                "%" -> result = numberText.toDouble() / 100
+            val result: Double = when(operator) {
+                "+" -> oldNum + numberText.toDouble()
+                "-" -> oldNum - numberText.toDouble()
+                "*" -> oldNum * numberText.toDouble()
+                "/" -> oldNum / numberText.toDouble()
+                "%" -> numberText.toDouble() / 100
+                else -> numberText.toDouble()
             }
             val hasDec = checkDecimal(result)
             numberText = if(hasDec) result.toString() else result.toInt().toString()
